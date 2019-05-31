@@ -22,9 +22,9 @@
 
 #define THIS_FILE "APP"
 
-#define SIP_DOMAIN  "example.com"
-#define SIP_USER    "alice"
-#define SIP_PASSWD  "secret"
+#define SIP_DOMAIN  "182.61.45.149:5060"//"example.com"
+#define SIP_USER    "102"//"alice"
+#define SIP_PASSWD  "102"//"secret"
 
 /* Callback called by the library upon receiving incoming call */
 static void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id call_id, pjsip_rx_data *rdata)

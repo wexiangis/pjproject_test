@@ -1,12 +1,12 @@
 
-#corss:=arm-linux-gnueabihf
+#cross:=arm-linux-gnueabihf
 
 host:=
 cc:=gcc
 
-ifdef corss
-	host=$(corss)
-	cc=$(corss)-gcc
+ifdef cross
+	host=$(cross)
+	cc=$(cross)-gcc
 endif
 
 ROOT=$(shell pwd)
@@ -15,7 +15,7 @@ CFLAGS+= -I./libs/include
 LIBS+= -L./libs/lib
 
 CFLAGS+= -DPJ_AUTOCONF=1 -DPJ_IS_BIG_ENDIAN=0 -DPJ_IS_LITTLE_ENDIAN=1
-LIBS+= $(shell cat ./libs/lib/pkgconfig/libpjproject.pc | grep "Libs:" | grep -o "\-l.*")
+LIBS+= $(shell grep "Libs:" ./libs/lib/pkgconfig/libpjproject.pc | grep -o "\-l.*")
 
 target:
 	@$(cc) -o app demo.c $(CFLAGS) $(LIBS)
