@@ -1,5 +1,5 @@
 
-#cross:=arm-linux-gnueabihf
+cross:=arm-linux-gnueabihf
 
 host:=
 cc:=gcc
@@ -20,18 +20,23 @@ LIBS+= $(shell grep "Libs:" ./libs/lib/pkgconfig/libpjproject.pc | grep -o "\-l.
 target:
 	@$(cc) -o app demo.c $(CFLAGS) $(LIBS)
 
-all: alsa pjproject
+all: dpkg-alsa alsa dpkg-pjproject pjproject
+	@$(cc) -o app demo.c $(CFLAGS) $(LIBS)
 	@echo "---------- all complete !! ----------"
 
-pjproject:
+dpkg-pjproject:
 	tar -xjf ./pjproject-2.8.tar.bz2 -C ./libs
+
+pjproject:
 	@cd $(ROOT)/libs/pjproject-2.8 && \
 	./configure --prefix=$(ROOT)/libs --host=$(host) LDFLAGS=-L$(ROOT)/libs/lib CFLAG=-I$(ROOT)/libs/include --disable-ssl --disable-libwebrtc && \
 	make dep && make -j4 && make install && \
 	cd -
 
-alsa:
+dpkg-alsa:
 	tar -xjf ./alsa-lib-1.1.9.tar.bz2 -C ./libs
+
+alsa:
 	@cd $(ROOT)/libs/alsa-lib-1.1.9 && \
 	./configure --prefix=$(ROOT)/libs --host=$(host) && \
 	make -j4 && make install && \
@@ -43,3 +48,4 @@ clean:
 cleanAll:
 	@rm ./libs/* ./app -rf
 	@echo "---------- all clean ----------"
+

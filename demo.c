@@ -22,9 +22,9 @@
 
 #define THIS_FILE "APP"
 
-#define SIP_DOMAIN  "182.61.45.149:5060"//"example.com"
-#define SIP_USER    "102"//"alice"
-#define SIP_PASSWD  "102"//"secret"
+#define SIP_DOMAIN  "example.com"
+#define SIP_USER    "alice"
+#define SIP_PASSWD  "secret"
 
 /* Callback called by the library upon receiving incoming call */
 static void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id call_id, pjsip_rx_data *rdata)
@@ -81,6 +81,11 @@ static void error_exit(const char *title, pj_status_t status)
  * main()
  *
  * argv[1] may contain URL to call.
+ * 
+ * argv format: sip:id@ip:port
+ * 
+ *     example: sip:101@192.168.10.1:5060
+ * 
  */
 int main(int argc, char *argv[])
 {
@@ -141,7 +146,7 @@ int main(int argc, char *argv[])
         cfg.id = pj_str("sip:" SIP_USER "@" SIP_DOMAIN);
         cfg.reg_uri = pj_str("sip:" SIP_DOMAIN);
         cfg.cred_count = 1;
-        cfg.cred_info[0].realm = pj_str(SIP_DOMAIN);
+        cfg.cred_info[0].realm = pj_str("*");//pj_str(SIP_DOMAIN); //*任意
         cfg.cred_info[0].scheme = pj_str("digest");
         cfg.cred_info[0].username = pj_str(SIP_USER);
         cfg.cred_info[0].data_type = PJSIP_CRED_DATA_PLAIN_PASSWD;
